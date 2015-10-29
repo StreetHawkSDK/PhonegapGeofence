@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="com.streethawk.geofence" version="1.7.0" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<name>StreetHawkGeofence</name>
+	<description> StreetHawk SDK plugin for running geofence based campaigns</description>	    
+    <license>Apache 2.0</license>
+    <keywords>push,messaging,deeplinking,referral,analytics,geofencing,beacons,marketing,automation,organic growth,feeds</keywords>
+	
+	<platform name="ios">
+		
+		<!-- Enable preprocessor macro SH_FEATURE_GEOFENCE -->
+		<hook type="after_plugin_install" src="src/ios/Script/enable_feature.js" />
+		<hook type="before_plugin_uninstall" src="src/ios/Script/disable_feature.js" />
+				
+	</platform>
+	<platform name="android">
+		<config-file parent="/*" target="res/xml/config.xml">
+			<feature name="geofence">
+				<param name="android-package" value="com.streethawk.geofence.geofence"/>
+			</feature>
+		</config-file>
+		<config-file parent="/manifest" target="AndroidManifest.xml">
+			<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    		<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+		</config-file>
+		<config-file parent="/manifest/application" target="AndroidManifest.xml">
+		 <uses-library android:name="com.google.android.maps" />
+        <service
+            android:name="com.streethawk.library.geofence.GeofenceService"
+            android:exported="false" >
+        </service>
+
+        <receiver
+            android:name="com.streethawk.library.geofence.SHCoreModuleReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.streethawk.intent.action.APP_STATUS_NOTIFICATION" />
+                <action android:name="android.location.PROVIDERS_CHANGED" />
+            </intent-filter>
+        </receiver>
+		</config-file>  
+		<source-file src="src/android/streethawkgeofence.jar" target-dir="libs/"/>
+	</platform>
+	<info>
+	 StreetHawk Geofence plugin depends on StreetHawk core plugin. 
+	 Install core plugin by using command
+	  
+	 cordova plugin add com.streethawk.plugin --variable APP_KEY=YOUR_APP_KEY --variable URL_SCHEME=YOUR_APP_SCHEME
+	
+	</info>
+</plugin>
