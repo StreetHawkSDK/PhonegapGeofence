@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="com.streethawk.geofence" version="1.7.2" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+<plugin id="com.streethawk.geofence" version="1.7.3" xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	<name>StreetHawkGeofence</name>
 	<description> StreetHawk SDK plugin for running geofence based campaigns</description>	    
@@ -14,6 +14,11 @@
 				
 	</platform>
 	<platform name="android">
+	   
+	   <framework src="com.google.android.gms:play-services-location:8.1.0" />
+	   <framework src="com.android.support:appcompat-v7:23.0.1" />
+	   <framework src="com.android.support:design:23.0.0" />
+	   
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="geofence">
 				<param name="android-package" value="com.streethawk.geofence.geofence"/>
