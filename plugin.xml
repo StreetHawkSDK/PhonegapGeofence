@@ -11,6 +11,12 @@
 		<!-- Enable preprocessor macro SH_FEATURE_GEOFENCE -->
 		<hook type="after_plugin_install" src="src/ios/Script/enable_feature.js" />
 		<hook type="before_plugin_uninstall" src="src/ios/Script/disable_feature.js" />
+		
+		<!-- Plugin native SDK -->
+        <header-file src="src/ios/SDK/Geofence/Private/SHGeofenceBridge.h" />
+        <source-file src="src/ios/SDK/Geofence/Private/SHGeofenceBridge.m" />
+        <header-file src="src/ios/SDK/Geofence/Private/SHGeofenceStatus.h" />
+        <source-file src="src/ios/SDK/Geofence/Private/SHGeofenceStatus.m" />
 				
 	</platform>
 	<platform name="android">
