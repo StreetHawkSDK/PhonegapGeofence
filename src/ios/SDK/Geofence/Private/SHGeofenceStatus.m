@@ -52,6 +52,16 @@
 @property (nonatomic) double radius;
 
 /**
+ Internal unique id for object. Optional for leaf geofence, none for inner node.
+ */
+@property (nonatomic, strong) NSString *suid;
+
+/**
+ Web console input the title name for this latitude/longitude. Optional for leaf geofence, none for inner node.
+ */
+@property (nonatomic, strong) NSString *title;
+
+/**
  Whether device is inside this geofence.
  */
 @property (nonatomic) BOOL isInside;
@@ -195,7 +205,7 @@
             if (needFetch)
             {
                 //update local cache time before send request, because this request has same format as others {app_status:..., code:0, value:...}, it will trigger `setGeofenceTimestamp` again. If fail to get request, clear local cache time in callback handler, make next fetch happen.
-                [[NSUserDefaults standardUserDefaults] setObject:@([[NSDate date] timeIntervalSinceReferenceDate]) forKey:APPSTATUS_GEOFENCE_FETCH_TIME];
+                [[NSUserDefaults standardUserDefaults] setObject:@([serverTime timeIntervalSinceReferenceDate] + 60/*avoid double accurate*/) forKey:APPSTATUS_GEOFENCE_FETCH_TIME];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 [[SHHTTPSessionManager sharedInstance] GET:@"/geofences/tree/" hostVersion:SHHostVersion_V1 parameters:nil success:^(NSURLSessionDataTask * _Nullable task, id  _Nullable responseObject)
                 {
@@ -278,6 +288,8 @@
         userInfo[@"latitude"] = @(geoFence.latitude);
         userInfo[@"longitude"] = @(geoFence.longitude);
         userInfo[@"radius"] = @(geoFence.radius);
+        userInfo[@"suid"] = NONULL(geoFence.suid);
+        userInfo[@"title"] = NONULL(geoFence.title);
         userInfo[@"isInside"] = @(isInside);
         [[NSNotificationCenter defaultCenter] postNotificationName:SHLMEnterExitGeofenceNotification object:nil userInfo:userInfo];
     }
@@ -510,7 +522,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"[%@](%f,%f)~%f. Is inside: %@. Nodes:%@", self.serverId, self.latitude, self.longitude, self.radius, shBoolToString(self.isInside), self.arrayNodes];
+    return [NSString stringWithFormat:@"%@: [%@](%f,%f)~%f. Is inside: %@. Nodes:%@", self.title, self.serverId, self.latitude, self.longitude, self.radius, shBoolToString(self.isInside), self.arrayNodes];
 }
 
 - (CLCircularRegion *)getGeoRegion
@@ -531,6 +543,8 @@
     dict[@"latitude"] = @(self.latitude);
     dict[@"longitude"] = @(self.longitude);
     dict[@"radius"] = @(self.radius);
+    dict[@"suid"] = NONULL(self.suid);
+    dict[@"title"] = NONULL(self.title);
     dict[@"inside"] = @(self.isInside);
     if (self.isLeaves)
     {
@@ -568,6 +582,14 @@
                 geofence.latitude = [dict[@"latitude"] doubleValue];
                 geofence.longitude = [dict[@"longitude"] doubleValue];
                 geofence.radius = [dict[@"radius"] doubleValue];
+                if ([dict.allKeys containsObject:@"suid"])
+                {
+                    geofence.suid = dict[@"suid"];
+                }
+                if ([dict.allKeys containsObject:@"title"])
+                {
+                    geofence.title = dict[@"title"];
+                }
                 if ([dict.allKeys containsObject:@"inside"])
                 {
                     geofence.isInside = [dict[@"inside"] boolValue];
