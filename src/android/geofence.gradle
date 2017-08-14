@@ -1,0 +1,11 @@
+repositories {
+        maven { url "http://pkg.streethawk.com/artifactory/streethawk" }
+}
+   
+dependencies {		
+        compile 'com.streethawk:geofence:latest.release'		
+}
+
+
+
+
