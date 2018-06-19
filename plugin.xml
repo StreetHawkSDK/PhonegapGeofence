@@ -22,7 +22,7 @@
 	<platform name="android">
 	   
 	   <framework src="com.google.android.gms:play-services-location:9.6.1" />
-	   
+	   <framework src="src/android/geofence.gradle" custom="true" type="gradleReference" />
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="geofence">
 				<param name="android-package" value="com.streethawk.geofence.geofence"/>
