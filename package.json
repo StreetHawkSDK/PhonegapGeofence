@@ -1,6 +1,6 @@
 {
   "name": "streethawkgeofence",
-  "version": "1.8.16",
+  "version": "1.10.0",
   "description": "## Introduction The repository hosts Phonegap plugin of StreetHawk SDK's Geofence module. The plugin  is required if you wish to run campaigns based on your application user entering or exiting a geofence.",
   "main": "index.js",
   "scripts": {
