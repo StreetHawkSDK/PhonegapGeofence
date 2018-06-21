@@ -10,7 +10,11 @@
     "type": "git",
     "url": "git+https://github.com/StreetHawkSDK/PhonegapGeofence.git"
   },
-  "keywords": [],
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
